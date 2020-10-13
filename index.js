@@ -81,90 +81,60 @@ async function deleteOlderReleases(keepLatest) {
     });
     data = data || [];
     
-    data.push(await fetch({
+    data.push(...(await fetch({
       ...commonOpts,
       path: `/repos/${owner}/${repo}/releases?per_page=100&page=2`,
       method: "GET",
-    }));
+    })));
 
-    data.push(await fetch({
+    data.push(...(await fetch({
       ...commonOpts,
       path: `/repos/${owner}/${repo}/releases?per_page=100&page=3`,
       method: "GET",
-    }));
+    })));
     
-    data.push(await fetch({
+    data.push(...(await fetch({
       ...commonOpts,
       path: `/repos/${owner}/${repo}/releases?per_page=100&page=4`,
       method: "GET",
-    }));
+    })));
     
-    data.push(await fetch({
+    data.push(...(await fetch({
       ...commonOpts,
       path: `/repos/${owner}/${repo}/releases?per_page=100&page=5`,
       method: "GET",
-    }));
+    })));
 
-    data.push(await fetch({
+    data.push(...(await fetch({
       ...commonOpts,
       path: `/repos/${owner}/${repo}/releases?per_page=100&page=6`,
       method: "GET",
-    }));
+    })));
 
-    data.push(await fetch({
+    data.push(...(await fetch({
       ...commonOpts,
       path: `/repos/${owner}/${repo}/releases?per_page=100&page=7`,
       method: "GET",
-    }));
+    })));
 
-    data.push(await fetch({
+    data.push(...(await fetch({
       ...commonOpts,
       path: `/repos/${owner}/${repo}/releases?per_page=100&page=8`,
       method: "GET",
-    }));
+    })));
 
-    data.push(await fetch({
+    data.push(...(await fetch({
       ...commonOpts,
       path: `/repos/${owner}/${repo}/releases?per_page=100&page=9`,
       method: "GET",
-    }));
+    })));
 
-    data.push(await fetch({
+    data.push(...(await fetch({
       ...commonOpts,
       path: `/repos/${owner}/${repo}/releases?per_page=100&page=10`,
       method: "GET",
-    }));
+    })));
 
-    data.push(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=11`,
-      method: "GET",
-    }));
-
-    data.push(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=12`,
-      method: "GET",
-    }));
-
-    data.push(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=13`,
-      method: "GET",
-    }));
-  
-    data.push(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=14`,
-      method: "GET",
-    }));
-  
-    data.push(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=15`,
-      method: "GET",
-    }));
-  
     const activeReleases = data.filter(({ draft }) => !draft);
     
     if (activeReleases.length === 0) {
@@ -175,13 +145,11 @@ async function deleteOlderReleases(keepLatest) {
       `💬  found total of ${activeReleases.length} active release(s)`
     );
     
-    console.log(activeReleases
-      .map(({ id, tag_name: tagName }) => ({ id, tagName })));
     releaseIdsAndTags = activeReleases
       .map(({ id, tag_name: tagName }) => ({ id, tagName }))
-      .filter(({tagName}) => tagName.startsWith(`${process.env.INPUT_PACKAGE_NAME}@`))
+      .filter(({tagName}) => tagName && tagName.startsWith(`${process.env.INPUT_PACKAGE_NAME}@`))
       .slice(keepLatest);
-    
+    console.log(releaseIdsAndTags);
   } catch (error) {
     console.error(`🌶  failed to get list of releases <- ${error.message}`);
     console.error(`exiting...`);
