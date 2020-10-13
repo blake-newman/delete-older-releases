@@ -194,10 +194,10 @@ async function deleteOlderReleases(keepLatest) {
       return;
     }
     console.log(
-      `💬  found total of ${activeReleases.length} active release(s)`
+      `💬  found total of ${data.length} active release(s)`
     );
     
-    releaseIdsAndTags = activeReleases
+    releaseIdsAndTags = data
       .map(({ id, tag_name: tagName }) => ({ id, tagName }))
       .filter(({tagName}) => tagName && tagName.startsWith(`${process.env.INPUT_PACKAGE_NAME}@`))
       .slice(keepLatest);
