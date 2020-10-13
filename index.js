@@ -47,6 +47,12 @@ if (keepLatest === 0) {
   console.error("🌶  given `keep_latest` is 0, this will wipe out all releases");
 }
 
+if (!process.env.INPUT_PACKAGE_NAME) {
+  console.error("No package name specified");
+  process.exitCode = 1;
+  return;
+}
+
 const shouldDeleteTags = process.env.INPUT_DELETE_TAGS === "true";
 
 if (shouldDeleteTags) {
@@ -74,6 +80,7 @@ async function deleteOlderReleases(keepLatest) {
     });
     data = data || [];
     const activeReleases = data.filter(({ draft }) => !draft);
+    
     if (activeReleases.length === 0) {
       console.log(`😕  no active releases found. exiting...`);
       return;
@@ -83,7 +90,9 @@ async function deleteOlderReleases(keepLatest) {
     );
     releaseIdsAndTags = activeReleases
       .map(({ id, tag_name: tagName }) => ({ id, tagName }))
+      .filter(({tagName}) => tagName.startsWith(`${process.env.INPUT_PACKAGE_NAME}@`))
       .slice(keepLatest);
+    
   } catch (error) {
     console.error(`🌶  failed to get list of releases <- ${error.message}`);
     console.error(`exiting...`);
