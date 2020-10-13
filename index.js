@@ -75,41 +75,11 @@ async function deleteOlderReleases(keepLatest) {
   try {
     let data = await fetch({
       ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=1`,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=6`,
       method: "GET",
     });
     data = data || [];
     
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=2`,
-      method: "GET",
-    })));
-
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=3`,
-      method: "GET",
-    })));
-    
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=4`,
-      method: "GET",
-    })));
-    
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=5`,
-      method: "GET",
-    })));
-
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=6`,
-      method: "GET",
-    })));
-
     data.push(...(await fetch({
       ...commonOpts,
       path: `/repos/${owner}/${repo}/releases?per_page=100&page=7`,
@@ -146,47 +116,6 @@ async function deleteOlderReleases(keepLatest) {
       method: "GET",
     })));
 
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=13`,
-      method: "GET",
-    })));
-
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=14`,
-      method: "GET",
-    })));
-
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=15`,
-      method: "GET",
-    })));
-
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=16`,
-      method: "GET",
-    })));
-
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=17`,
-      method: "GET",
-    })));
-
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=18`,
-      method: "GET",
-    })));
-
-    data.push(...(await fetch({
-      ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100&page=19`,
-      method: "GET",
-    })));
 
     
     if (data.length === 0) {
