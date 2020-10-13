@@ -135,6 +135,36 @@ async function deleteOlderReleases(keepLatest) {
       method: "GET",
     })));
 
+    data.push(...(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=11`,
+      method: "GET",
+    })));
+
+    data.push(...(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=12`,
+      method: "GET",
+    })));
+
+    data.push(...(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=13`,
+      method: "GET",
+    })));
+
+    data.push(...(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=14`,
+      method: "GET",
+    })));
+
+    data.push(...(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=15`,
+      method: "GET",
+    })));
+
     const activeReleases = data.filter(({ draft }) => !draft);
     
     if (activeReleases.length === 0) {
