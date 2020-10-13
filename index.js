@@ -65,7 +65,6 @@ const commonOpts = {
   protocol: "https:",
   auth: `user:${GITHUB_TOKEN}`,
   headers: {
-    "rel": "last",
     "Content-Type": "application/json",
     "User-Agent": "node.js",
   },
@@ -76,7 +75,7 @@ async function deleteOlderReleases(keepLatest) {
   try {
     let data = await fetch({
       ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases?per_page=100`,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=1`,
       method: "GET",
     });
     data = data || [];
@@ -165,9 +164,32 @@ async function deleteOlderReleases(keepLatest) {
       method: "GET",
     })));
 
-    const activeReleases = data.filter(({ draft }) => !draft);
+    data.push(...(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=16`,
+      method: "GET",
+    })));
+
+    data.push(...(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=17`,
+      method: "GET",
+    })));
+
+    data.push(...(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=18`,
+      method: "GET",
+    })));
+
+    data.push(...(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=19`,
+      method: "GET",
+    })));
+
     
-    if (activeReleases.length === 0) {
+    if (data.length === 0) {
       console.log(`😕  no active releases found. exiting...`);
       return;
     }
