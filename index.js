@@ -65,6 +65,7 @@ const commonOpts = {
   protocol: "https:",
   auth: `user:${GITHUB_TOKEN}`,
   headers: {
+    "rel": "last",
     "Content-Type": "application/json",
     "User-Agent": "node.js",
   },
@@ -75,10 +76,95 @@ async function deleteOlderReleases(keepLatest) {
   try {
     let data = await fetch({
       ...commonOpts,
-      path: `/repos/${owner}/${repo}/releases`,
+      path: `/repos/${owner}/${repo}/releases?per_page=100`,
       method: "GET",
     });
     data = data || [];
+    
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=2`,
+      method: "GET",
+    }));
+
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=3`,
+      method: "GET",
+    }));
+    
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=4`,
+      method: "GET",
+    }));
+    
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=5`,
+      method: "GET",
+    }));
+
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=6`,
+      method: "GET",
+    }));
+
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=7`,
+      method: "GET",
+    }));
+
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=8`,
+      method: "GET",
+    }));
+
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=9`,
+      method: "GET",
+    }));
+
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=10`,
+      method: "GET",
+    }));
+
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=11`,
+      method: "GET",
+    }));
+
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=12`,
+      method: "GET",
+    }));
+
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=13`,
+      method: "GET",
+    }));
+  
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=14`,
+      method: "GET",
+    }));
+  
+    data.push(await fetch({
+      ...commonOpts,
+      path: `/repos/${owner}/${repo}/releases?per_page=100&page=15`,
+      method: "GET",
+    }));
+  
     const activeReleases = data.filter(({ draft }) => !draft);
     
     if (activeReleases.length === 0) {
