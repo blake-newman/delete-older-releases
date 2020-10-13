@@ -88,6 +88,9 @@ async function deleteOlderReleases(keepLatest) {
     console.log(
       `💬  found total of ${activeReleases.length} active release(s)`
     );
+    
+    console.log(activeReleases
+      .map(({ id, tag_name: tagName }) => ({ id, tagName })));
     releaseIdsAndTags = activeReleases
       .map(({ id, tag_name: tagName }) => ({ id, tagName }))
       .filter(({tagName}) => tagName.startsWith(`${process.env.INPUT_PACKAGE_NAME}@`))
